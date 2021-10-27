@@ -16,8 +16,8 @@ Question.prototype.checkAnswer = function(selectedElement){
     }else {
         $(parent).attr("class", "btn btn-danger");
         $(parent).siblings().attr ("disabled", "disabled");
-        let  infoHtml= `<br><p>${this.comment}</p>`
-        document.getElementById("solutionInfo").innerHTML = infoHtml;
+        let  infoHtml= `<br><div class="alert alert-warning" role="alert">${this.comment}</div>`
+        document.getElementById("questionInfo").innerHTML = infoHtml;
     }  
 }
 
@@ -30,14 +30,11 @@ function Quiz(questions){
 
 Quiz.prototype.getQuestion = function(){ 
     let nextQuestion = this.questions[this.questionIndex];
-    return nextQuestion;
-    
+    return nextQuestion; 
 }
 
 Quiz.prototype.isFinish = function(){
     return this.questions.length === this.questionIndex
-        
-    
 }
 
 Quiz.prototype.guess = function (selectedElement){ 
@@ -55,75 +52,69 @@ let questions = [q1, q2, q3];
 let quiz = new Quiz(questions);
 
 //LOAD ELEMENTS TO HTML
-function loadQuestion(){
+let loadQuestion = () =>{
     let nextButton = document.getElementById("btnNext");
     let previousButton = document.getElementById("btnPrevious");
+    document.getElementById("btnAgain").style.display= "none";
+    document.querySelector("#buttons").style.display = "block";
     if(quiz.isFinish()){
         showScore(previousButton, nextButton);
     }else{  
         let quizQuestion = quiz.getQuestion();
         let quizOptions = quizQuestion.options;
         document.querySelector("#question").innerText = quizQuestion.text;
-        for(let i=0; i<quizOptions.length; i++){
+        for(let i in quizOptions){
             let optionElement = document.querySelector("#option"+i);
             let parentElements = optionElement.parentElement;
-            optionElement.innerText = quizOptions[i];   
+            optionElement.innerText = quizOptions[i]; 
             getSelection("btn"+i, optionElement); 
-            previousQuestion(previousButton, parentElements);
-            nextQuestion(nextButton, parentElements);
+            pagingQuestion(previousButton, nextButton, parentElements);           
         }
         showProgress();
     }  
 }
 
-function getSelection(id, optionElement){
-    let button = document.getElementById(id);
+let getSelection = (...selectionElements) => {
+    let button = document.getElementById(selectionElements[0]);
     button.onclick = function(){ 
-        quiz.guess(optionElement);
+        quiz.guess(selectionElements[1]);
     };
 };
 
-function previousQuestion(btn, btnOptions){
-    document.getElementById("solutionInfo").innerHTML ="";
-    btnOptions.setAttribute("class", "btn btn-primary");
-    btnOptions.removeAttribute("disabled");
+let pagingQuestion = (...pagingElements) => {
+    document.getElementById("questionInfo").innerHTML ="";
+    pagingElements[2].setAttribute("class", "btn btn-primary");
+    pagingElements[2].removeAttribute("disabled");
     if(quiz.questionIndex !== 0){
-        btn.style.display = "block";
-        btn.onclick = function(){
+        pagingElements[0].style.display = "block";
+        pagingElements[0].disabled = false;
+        pagingElements[0].onclick = () => {
             quiz.questionIndex--;
             loadQuestion();
         }
-    }else {
-        btn.style.display = "none";
-    }
-
-}
-
-
-function nextQuestion(btnNext,btnOptions){
-    document.getElementById("solutionInfo").innerHTML ="";
-    btnOptions.setAttribute("class", "btn btn-primary");
-    btnOptions.removeAttribute("disabled");
-    if(quiz.questionIndex == 0){
-        btnNext.style.display ="block";
-        btnNext.onclick = function(){
+    } else{
+        pagingElements[0].style.display = "block";
+        pagingElements[0].disabled = true;
+        pagingElements[1].style.display ="block";
+        pagingElements[1].onclick = () => {
             quiz.questionIndex++;
             loadQuestion();
         };
     }
-    
-};
 
-function showScore(...buttons){
-    for(let i=0; i<buttons.length; i++){
-        buttons[i].style.display = "none";
+}
+
+let showScore = (...pagingButtons) => {
+    for(let i in pagingButtons){
+        pagingButtons[i].style.display = "none";
     };
-    let html  = `<h2>Total Score: ${quiz.score}</h2>`;
+    document.querySelector("#buttons").style.display = "none";
+    let html  = `<h3>Total Score: ${quiz.score}</h3>`;
     document.querySelector("#question").innerHTML = html;
-    let againButton = "<button id ='btnAgain' class ='btn btn-secondary'>Start Again</button>"
-    document.querySelector("#startAgain").innerHTML=againButton;
+    document.getElementById("questionInfo").innerHTML = "";
     let btnAgain = document.getElementById("btnAgain");
-    btnAgain.onclick = function(){
+    btnAgain.style.display = "block";
+    btnAgain.onclick = () => {
         btnAgain.style.display = "none";
         quiz.questionIndex = 0;
         questions = questions.sort(()=> Math.random()-0.5);
@@ -131,7 +122,7 @@ function showScore(...buttons){
     };
 };
 
-function showProgress(){
+let showProgress = () => {
     let total = quiz.questions.length;
     let questionNumber = quiz.questionIndex+1;
     document.querySelector("#progress").innerText =  "Question "+ questionNumber + " of " + total;

@@ -28,55 +28,56 @@
                         </h5>
                         <hr>
                         <div id="buttons">
-                            <button id="btn0" class="btn btn-primary">
+                            <button type="button" id="btn0" class="btn btn-primary">
                                 <span id="option0">
                                     Option 0
                                 </span>
                             </button>
-                            <button id="btn1" class="btn btn-primary">
+                            <button type="button" id="btn1" class="btn btn-primary">
                                 <span id="option1">
                                     Option 1
                                 </span>
                             </button>
-                            <button id="btn2" class="btn btn-primary">
+                            <button type="button" id="btn2" class="btn btn-primary">
                                 <span id="option2">
                                     Option 2
                                 </span>
                             </button>
-                            <button id="btn3" class="btn btn-primary">
+                            <button type="button" id="btn3" class="btn btn-primary">
                                 <span id="option3">
                                     Option 3
                                 </span>
                             </button>
                         </div>
-                        <div id="solutionInfo"></div>
+                        <div id="questionInfo"></div>
                     </div>
                     <div class="card-footer">
                         <div class="container">
                             <div class="row">
-                                <div id="progress" class="col-sm-6"></div>
+                                <div id="progress" class="col-sm-8"></div>
                                 <!--Button Group Olayini yapabiliriz-->
-                                <div class="col-sm-2 previous">
-                                    <button id="btnPrevious" class="btn btn-outline-info">
+                                <div class="btn-group" role="group" aria-label="pagination buttons">
+                                    <button type="button" id="btnPrevious" class="btn btn-outline-info">
                                         <span>
                                             Previous
                                         </span>
                                     </button>
-                                </div>
-                                <div class="col-sm-2 next">
-                                    <button id="btnNext" class="btn btn-outline-info">
+                                    <button type="button" id="btnNext" class="btn btn-outline-info">
                                         <span>
                                             Next
                                         </span>
                                     </button>
+                                    <button id='btnAgain' class='btn btn-secondary'>
+                                        Start Again
+                                    </button>
                                 </div>
-                                <div id="startAgain" class="col-sm-2"></div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
+    </div>
     </div>
     <script src="quiz.js"></script>
 </body>
