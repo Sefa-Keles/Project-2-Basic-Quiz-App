@@ -1,10 +1,12 @@
 
 //QUESTION CONSTRUCTOR
-let Question = function(text, options, answer,comment){
-    this.text = text;
-    this.options = options;
-    this.answer = answer;
-    this.comment = comment;
+class Question {
+    constructor(text, options, answer,comment){
+        this.text = text;
+        this.options = options;
+        this.answer = answer;
+        this.comment = comment;
+    }
 }
 
 Question.prototype.checkAnswer = function(selectedElement){
@@ -22,10 +24,12 @@ Question.prototype.checkAnswer = function(selectedElement){
 }
 
 //QUIZ CONSTRUCTOR
-function Quiz(questions){
-    this.questions = questions;
-    this.score = 0;
-    this.questionIndex = 0; 
+class Quiz {
+    constructor(questions) {
+        this.questions = questions;
+        this.score = 0;
+        this.questionIndex = 0; 
+    }
 }
 
 Quiz.prototype.getQuestion = function(){ 
@@ -82,6 +86,8 @@ let getSelection = (...selectionElements) => {
 };
 
 let pagingQuestion = (...pagingElements) => {
+
+    //for dongusu kullanilarak bu kod blogunu daha kisa yazabilirim.
     document.getElementById("questionInfo").innerHTML ="";
     pagingElements[2].setAttribute("class", "btn btn-primary");
     pagingElements[2].removeAttribute("disabled");
