@@ -7,21 +7,21 @@ class Question {
         this.answer = answer;
         this.comment = comment;
     }
+    checkAnswer = function(selectedElement){
+        let parent = selectedElement.parentNode;
+        if(this.answer === selectedElement.innerText){
+            $(parent).attr("class", "btn btn-success");
+            $(parent).siblings().attr ("disabled", "disabled");
+            return true;
+        }else {
+            $(parent).attr("class", "btn btn-danger");
+            $(parent).siblings().attr ("disabled", "disabled");
+            let  infoHtml= `<br><div class="alert alert-danger" role="alert">${this.comment}</div>`
+            document.getElementById("questionInfo").innerHTML = infoHtml;
+        }  
+    }
 }
 
-Question.prototype.checkAnswer = function(selectedElement){
-    let parent = selectedElement.parentNode;
-    if(this.answer === selectedElement.innerText){
-        $(parent).attr("class", "btn btn-success");
-        $(parent).siblings().attr ("disabled", "disabled");
-        return true;
-    }else {
-        $(parent).attr("class", "btn btn-danger");
-        $(parent).siblings().attr ("disabled", "disabled");
-        let  infoHtml= `<br><div class="alert alert-warning" role="alert">${this.comment}</div>`
-        document.getElementById("questionInfo").innerHTML = infoHtml;
-    }  
-}
 
 //QUIZ CONSTRUCTOR
 class Quiz {
@@ -30,23 +30,23 @@ class Quiz {
         this.score = 0;
         this.questionIndex = 0; 
     }
-}
-
-Quiz.prototype.getQuestion = function(){ 
-    let nextQuestion = this.questions[this.questionIndex];
-    return nextQuestion; 
-}
-
-Quiz.prototype.isFinish = function(){
-    return this.questions.length === this.questionIndex
-}
-
-Quiz.prototype.guess = function (selectedElement){ 
-    let myQuestion = this.getQuestion();
-    if(myQuestion.checkAnswer(selectedElement)){
-        this.score++;
+    getQuestion = function(){ 
+        let nextQuestion = this.questions[this.questionIndex];
+        return nextQuestion; 
+    }
+    isFinish = function(){
+        return this.questions.length === this.questionIndex
+    }
+    guess = function (selectedElement){ 
+        let myQuestion = this.getQuestion();
+        if(myQuestion.checkAnswer(selectedElement)){
+            this.score++;
+        }
     }
 }
+
+
+
 
 let q1 = new Question("1 What is the best programming language", ["php", "C#", "JS", "Phyton"], "C#","C# is a Microsoft product and Microsoft products are the most used products in the world.");
 let q2 = new Question("2 What is the most popular programming language", ["php", "C#", "JS", "Phyton"], "JS", "The most up-to-date technologies on web pages are produced based on Javascript.");
